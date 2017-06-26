@@ -20,7 +20,7 @@ generate_dynamic_reconfigure_options(
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES open_simplex_noise
+  LIBRARIES open_simplex_noise_ros
   CATKIN_DEPENDS nodelet roscpp sensor_msgs std_msgs
 )
 
@@ -29,15 +29,15 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(open_simplex_noise
+add_library(open_simplex_noise_ros
   src/open_simplex_noise.cpp
   src/open-simplex-noise.c
 )
 
 
-add_dependencies(open_simplex_noise ${PROJECT_NAME}_gencfg)
+add_dependencies(open_simplex_noise_ros ${PROJECT_NAME}_gencfg)
 
-target_link_libraries(open_simplex_noise
+target_link_libraries(open_simplex_noise_ros
   ${catkin_LIBRARIES}
 )
 
@@ -48,7 +48,7 @@ target_link_libraries(open_simplex_noise_node
 
 # TODO(lucasw) is this needed?
 if(catkin_EXPORTED_LIBRARIES)
-  add_dependencies(open_simplex_noise ${catkin_EXPORTED_LIBRARIES})
+  add_dependencies(open_simplex_noise_ros ${catkin_EXPORTED_LIBRARIES})
 endif()
 
 # TODO(lucasw) install

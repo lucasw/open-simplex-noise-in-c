@@ -39,6 +39,6 @@ int main(int argc, char** argv)
   nodelet::M_string remap(ros::names::getRemappings());
   nodelet::V_string nargv;
   std::string nodelet_name = ros::this_node::getName();
-  nodlet.load(nodelet_name, "open_simplex_noise_ros/OpenSimplexNoise", remap, nargv);
+  nodelet.load(nodelet_name, "open_simplex_noise_ros/OpenSimplexNoise", remap, nargv);
   ros::spin();
 }
