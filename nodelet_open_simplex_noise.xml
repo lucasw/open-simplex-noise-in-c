@@ -1,0 +1,9 @@
+<library path="lib/libopen_simplex_noise_ros">
+  <class name="open_simplex_noise_ros/OpenSimplexNoise"
+      type="open_simplex_noise_ros::OpenSimplexNoise"
+      base_class_type="nodelet::Nodelet">
+    <description>
+      Generate an image or a float topic using opensimplex noise
+    </description>
+  </class>
+</library>

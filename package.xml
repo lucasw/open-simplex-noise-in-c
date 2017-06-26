@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+  <name>open_simplex_noise_ros</name>
+  <version>0.0.1</version>
+  <description>Publish an image or a float value using the opensimplex noise algorithm.
+    Forked from https://github.com/smcameron/open-simplex-noise-in-c
+  </description>
+
+  <maintainer email="wsacul@gmail.com">Lucas Walter</maintainer>
+
+  <license>Unlicense</license>
+
+  <url type="website">https://github.com/lucasw/open_simplex_noise_ros</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <run_depend>dynamic_reconfigure</run_depend>
+  <run_depend>nodelet</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+
+  <export>
+    <nodelet plugin="${prefix}/nodelet_open_simplex_noise.xml" />
+  </export>
+
+</package>
