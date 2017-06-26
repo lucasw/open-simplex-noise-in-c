@@ -71,7 +71,7 @@ void OpenSimplexNoise::update(const ros::TimerEvent& e)
           static_cast<double>(x) / config_.feature_size_x,
           static_cast<double>(y) / config_.feature_size_y,
           cv_image.header.stamp.toSec() / config_.feature_size_t);
-      cv_image.image.at<unsigned char>(y, x) = value * 255.0;
+      cv_image.image.at<unsigned char>(y, x) = value * config_.scale + config_.offset;
     }
   }
 
