@@ -63,15 +63,82 @@ void OpenSimplexNoise::update(const ros::TimerEvent& e)
   cv_image.encoding = "mono8";
   cv_image.image = cv::Mat(cv::Size(config_.width, config_.height), CV_8UC1);
 
+  const double ti = cv_image.header.stamp.toSec();
+  const double wd = config_.width;
+  const double ht = config_.width;
+
+  std::vector<double> scale;
+  scale.push_back(config_.scale0);
+  scale.push_back(config_.scale1);
+  scale.push_back(config_.scale2);
+  scale.push_back(config_.scale3);
+
+  std::vector<double> offset;
+  offset.push_back(config_.offset0);
+  offset.push_back(config_.offset1);
+  offset.push_back(config_.offset2);
+  offset.push_back(config_.offset3);
+
+  std::vector<double> feature_size_x;
+  feature_size_x.push_back(config_.feature_size_x0);
+  feature_size_x.push_back(config_.feature_size_x1);
+  feature_size_x.push_back(config_.feature_size_x2);
+  feature_size_x.push_back(config_.feature_size_x3);
+
+  std::vector<double> feature_size_y;
+  feature_size_y.push_back(config_.feature_size_y0);
+  feature_size_y.push_back(config_.feature_size_y1);
+  feature_size_y.push_back(config_.feature_size_y2);
+  feature_size_y.push_back(config_.feature_size_y3);
+
+  std::vector<double> feature_size_t;
+  feature_size_y.push_back(config_.feature_size_t0);
+  feature_size_y.push_back(config_.feature_size_t1);
+  feature_size_y.push_back(config_.feature_size_t2);
+  feature_size_y.push_back(config_.feature_size_t3);
+
+  std::vector<double> offset_x;
+  offset_x.push_back(config_.offset_x0);
+  offset_x.push_back(config_.offset_x1);
+  offset_x.push_back(config_.offset_x2);
+  offset_x.push_back(config_.offset_x3);
+
+  std::vector<double> offset_y;
+  offset_y.push_back(config_.offset_y0);
+  offset_y.push_back(config_.offset_y1);
+  offset_y.push_back(config_.offset_y2);
+  offset_y.push_back(config_.offset_y3);
+
   for (size_t y = 0; y < config_.height; ++y)
   {
     for (size_t x = 0; x < config_.width; ++x)
     {
-      const double value = open_simplex_noise3(ctx_,
-          static_cast<double>(x) / config_.feature_size_x,
-          static_cast<double>(y) / config_.feature_size_y,
-          cv_image.header.stamp.toSec() / config_.feature_size_t);
-      cv_image.image.at<unsigned char>(y, x) = value * config_.scale + config_.offset;
+      // TODO(lucasw) get 4 from cfg
+      double value = 0;
+      const double xd = static_cast<double>(x);
+      const double yd = static_cast<double>(y);
+
+      // it looks like the dynamic reconfigure c++ generation doesn't make
+      // this easier- or is there a string access method?
+      for (size_t i = 0; i < scale.size(); ++i)
+      {
+        if (scale[i] != 0.0)
+        {
+          const double vi = open_simplex_noise3(ctx_,
+            (xd + offset_x[i] * wd) / feature_size_x[i],
+            (yd + offset_y[i] * ht) / feature_size_y[i],
+            ti / config_.feature_size_t0);
+          value += vi * scale[i];
+        }
+        value += offset[i];
+      }
+
+      if (config_.clip)
+      {
+        if (value > 255) value = 255;
+        if (value < 0) value = 0;
+      }
+      cv_image.image.at<unsigned char>(y, x) = value;
     }
   }
 
